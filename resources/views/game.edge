@@ -1,7 +1,19 @@
-@if(!guessedNumber)
-  <p> Please specify a number by passing <code>?number</code> to the url </p>
-@elseif(guessedNumber === randomNumber)
-  <h2> Matched </h2>
-@else
-  <h2>Match failed. The actual number is {{ randomNumber }}</h2>
-@endif
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hello DevGuild</title>
+  {{ style('css/main') }}
+</head>
+<body>
+  <section>
+    @if(!guessedNumber)
+      <p> Please specify a number by passing <code>?number</code> to the url </p>
+    @elseif(guessedNumber === randomNumber)
+      <h2> Matched </h2>
+    @else
+      <h2>Match failed. The actual number is {{ randomNumber }}</h2>
+    @endif
+  </section>
+</body>
+</html>
