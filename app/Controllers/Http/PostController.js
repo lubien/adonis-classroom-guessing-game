@@ -1,5 +1,7 @@
 'use strict'
 
+const { validate } = use('Validator')
+
 const posts = [
   {
     id: 1,
@@ -32,12 +34,26 @@ class PostController {
     response.json(post)
   }
 
-  create({ request, response }) {
+  async create({ request, response }) {
     // receber os dados do novo post
     // criar um objeto
     const newPost = request.only(['title', 'content'])
     const nextId = posts[posts.length - 1].id + 1
     newPost.id = nextId
+
+    // valida o novo post
+    const rules = {
+      title: 'required|string',
+      content: 'string'
+    }
+
+    const validation = await validate(newPost, rules)
+
+    if (validation.fails()) {
+      response.badRequest(validation.messages())
+      return
+    }
+
     // salvar na lista
     posts.push(newPost)
     // retornar o novo post
