@@ -60,7 +60,7 @@ class PostController {
     response.json(newPost)
   }
 
-  update({ params, request, response }) {
+  async update({ params, request, response }) {
     // pegar o id do url
     const id = Number(params.id)
     // pegar a postagem de id tal
@@ -72,6 +72,20 @@ class PostController {
       ...post,
       ...updates
     }
+
+    // valida o post atualizado
+    const rules = {
+      title: 'string',
+      content: 'string'
+    }
+
+    const validation = await validate(newPost, rules)
+
+    if (validation.fails()) {
+      response.badRequest(validation.messages())
+      return
+    }
+
     const position = posts.findIndex(post => post.id === id)
     posts.splice(position, 1, newPost)
     // retornar a postagem ja atualizada
