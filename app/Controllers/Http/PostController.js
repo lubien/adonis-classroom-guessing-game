@@ -17,6 +17,20 @@ class PostController {
   index({ response }) {
     response.json(posts)
   }
+
+  show({ params, response }) {
+    const id = Number(params.id)
+    const post = posts.find(post => post.id === id)
+
+    if (!post) {
+      response.notFound({
+        error: 'Not Found'
+      })
+      return
+    }
+
+    response.json(post)
+  }
 }
 
 module.exports = PostController
