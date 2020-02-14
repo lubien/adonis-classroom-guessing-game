@@ -20,8 +20,4 @@ const Route = use('Route')
 // Route.on('/outra').render('welcome')
 
 Route.get('/', 'GameController.render')
-
-Route.get('/posts', 'PostController.index')
-Route.get('/posts/:id', 'PostController.show')
-Route.post('/posts', 'PostController.create')
-Route.put('/posts/:id', 'PostController.update')
+Route.resource('posts', 'PostController').apiOnly()
