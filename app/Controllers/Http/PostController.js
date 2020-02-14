@@ -59,6 +59,24 @@ class PostController {
     // retornar o novo post
     response.json(newPost)
   }
+
+  update({ params, request, response }) {
+    // pegar o id do url
+    const id = Number(params.id)
+    // pegar a postagem de id tal
+    const post = posts.find(post => post.id === id)
+    // pegar os dados novos
+    const updates = request.only(['title', 'content'])
+    // atualizar a postagem
+    const newPost = {
+      ...post,
+      ...updates
+    }
+    const position = posts.findIndex(post => post.id === id)
+    posts.splice(position, 1, newPost)
+    // retornar a postagem ja atualizada
+    response.json(newPost)
+  }
 }
 
 module.exports = PostController
