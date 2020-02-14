@@ -35,7 +35,7 @@ class PostController {
   create({ request, response }) {
     // receber os dados do novo post
     // criar um objeto
-    const newPost = request.all()
+    const newPost = request.only(['title', 'content'])
     const nextId = posts[posts.length - 1].id + 1
     newPost.id = nextId
     // salvar na lista
