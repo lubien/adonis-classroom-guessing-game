@@ -34,7 +34,7 @@ class PostController {
     response.json(post)
   }
 
-  async create({ request, response }) {
+  async store({ request, response }) {
     // receber os dados do novo post
     // criar um objeto
     const newPost = request.only(['title', 'content'])
@@ -65,6 +65,14 @@ class PostController {
     const id = Number(params.id)
     // pegar a postagem de id tal
     const post = posts.find(post => post.id === id)
+
+    if (!post) {
+      response.notFound({
+        error: 'Not Found'
+      })
+      return
+    }
+
     // pegar os dados novos
     const updates = request.only(['title', 'content'])
     // atualizar a postagem
@@ -90,6 +98,25 @@ class PostController {
     posts.splice(position, 1, newPost)
     // retornar a postagem ja atualizada
     response.json(newPost)
+  }
+
+  destroy({ params, response }) {
+    // pegar o id do url
+    const id = Number(params.id)
+    // encontrar a postagem
+    const post = posts.find(post => post.id === id)
+
+    if (!post) {
+      response.notFound({
+        error: 'Not Found'
+      })
+      return
+    }
+    // deletar a postagem desse id
+    const position = posts.findIndex(post => post.id === id)
+    posts.splice(position, 1)
+    // retornar nada com codigo No Content
+    response.noContent({})
   }
 }
 
