@@ -31,6 +31,18 @@ class PostController {
 
     response.json(post)
   }
+
+  create({ request, response }) {
+    // receber os dados do novo post
+    // criar um objeto
+    const newPost = request.all()
+    const nextId = posts[posts.length - 1].id + 1
+    newPost.id = nextId
+    // salvar na lista
+    posts.push(newPost)
+    // retornar o novo post
+    response.json(newPost)
+  }
 }
 
 module.exports = PostController
