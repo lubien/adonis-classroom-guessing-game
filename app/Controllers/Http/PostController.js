@@ -3,19 +3,6 @@
 const { validate } = use('Validator')
 const Post = use('App/Models/Post')
 
-const posts = [
-  {
-    id: 1,
-    title: 'Meu post novo',
-    content: 'Lorem ipsum dolor sit amet'
-  },
-  {
-    id: 2,
-    title: 'Um outro post',
-    content: 'Lorem ipsum dolor sit amet'
-  }
-]
-
 class PostController {
   async index({ response }) {
     response.json(await Post.all())
@@ -104,11 +91,11 @@ class PostController {
     response.json(post)
   }
 
-  destroy({ params, response }) {
+  async destroy({ params, response }) {
     // pegar o id do url
     const id = Number(params.id)
     // encontrar a postagem
-    const post = posts.find(post => post.id === id)
+    const post = await Post.find(id)
 
     if (!post) {
       response.notFound({
@@ -117,8 +104,7 @@ class PostController {
       return
     }
     // deletar a postagem desse id
-    const position = posts.findIndex(post => post.id === id)
-    posts.splice(position, 1)
+    await post.delete()
     // retornar nada com codigo No Content
     response.noContent({})
   }
