@@ -67,7 +67,7 @@ class PostController {
     // pegar o id do url
     const id = Number(params.id)
     // pegar a postagem de id tal
-    const post = posts.find(post => post.id === id)
+    const post = await Post.find(id)
 
     if (!post) {
       response.notFound({
@@ -77,7 +77,7 @@ class PostController {
     }
 
     // pegar os dados novos
-    const updates = request.only(['title', 'content'])
+    const updates = request.only(['title', 'description'])
     // atualizar a postagem
     const newPost = {
       ...post,
@@ -87,7 +87,7 @@ class PostController {
     // valida o post atualizado
     const rules = {
       title: 'string',
-      content: 'string'
+      description: 'string'
     }
 
     const validation = await validate(newPost, rules)
@@ -97,10 +97,11 @@ class PostController {
       return
     }
 
-    const position = posts.findIndex(post => post.id === id)
-    posts.splice(position, 1, newPost)
+    post.merge(updates)
+    await post.save()
+
     // retornar a postagem ja atualizada
-    response.json(newPost)
+    response.json(post)
   }
 
   destroy({ params, response }) {
