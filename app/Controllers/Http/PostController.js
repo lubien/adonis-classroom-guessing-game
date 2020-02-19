@@ -17,8 +17,8 @@ const posts = [
 ]
 
 class PostController {
-  index({ response }) {
-    response.json(posts)
+  async index({ response }) {
+    response.json(await Post.all())
   }
 
   show({ params, response }) {
