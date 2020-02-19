@@ -21,9 +21,9 @@ class PostController {
     response.json(await Post.all())
   }
 
-  show({ params, response }) {
+  async show({ params, response }) {
     const id = Number(params.id)
-    const post = posts.find(post => post.id === id)
+    const post = await Post.find(id)
 
     if (!post) {
       response.notFound({
